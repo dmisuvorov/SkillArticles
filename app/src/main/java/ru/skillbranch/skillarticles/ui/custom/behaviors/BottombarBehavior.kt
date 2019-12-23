@@ -11,6 +11,7 @@ import kotlin.math.min
 class BottombarBehavior<V : View>(context: Context, attrs: AttributeSet) :
     CoordinatorLayout.Behavior<V>(context, attrs) {
 
+
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
         child: V,
