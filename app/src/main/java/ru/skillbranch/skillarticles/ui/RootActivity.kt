@@ -26,6 +26,7 @@ class RootActivity : AppCompatActivity() {
     private lateinit var viewModel: ArticleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
         initToolbar()
