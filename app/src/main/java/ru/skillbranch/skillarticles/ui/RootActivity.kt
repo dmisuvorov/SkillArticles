@@ -6,6 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProviders
@@ -46,7 +48,7 @@ class RootActivity : AppCompatActivity() {
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
         renderSearchSettings(viewModel.currentState, searchItem, searchView)
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener{
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 viewModel.handleSearchMode(true)
                 return true
@@ -72,7 +74,6 @@ class RootActivity : AppCompatActivity() {
         })
         return super.onCreateOptionsMenu(menu)
     }
-
 
 
     private fun renderSearchSettings(
@@ -138,8 +139,8 @@ class RootActivity : AppCompatActivity() {
         btn_bookmark.isChecked = data.isBookmark
 
         switch_mode.isChecked = data.isDarkMode
-        delegate.localNightMode =
-            if (data.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        if (data.isDarkMode) AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        else AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
 
         if (data.isBigText) {
             tv_text_content.textSize = 18f
