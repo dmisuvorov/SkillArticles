@@ -6,7 +6,7 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginRight
 import ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
-import ru.skillbranch.skillarticles.ui.custom.BottomBar
+import ru.skillbranch.skillarticles.ui.custom.Bottombar
 
 
 class SubmenuBehavior() :
@@ -19,7 +19,7 @@ class SubmenuBehavior() :
         child: ArticleSubmenu,
         dependency: View
     ): Boolean {
-        return dependency is BottomBar
+        return dependency is Bottombar
     }
 
     override fun onDependentViewChanged(
