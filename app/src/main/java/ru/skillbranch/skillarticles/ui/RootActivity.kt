@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.getSpans
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.layout_bottombar.*
@@ -23,6 +22,7 @@ import kotlinx.android.synthetic.main.layout_submenu.*
 import kotlinx.android.synthetic.main.search_view_layout.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
+import ru.skillbranch.skillarticles.extensions.setMarginOptionally
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
 import ru.skillbranch.skillarticles.ui.base.Binding
 import ru.skillbranch.skillarticles.ui.custom.SearchFocusSpan
@@ -34,16 +34,12 @@ import ru.skillbranch.skillarticles.viewmodels.ArticleState
 import ru.skillbranch.skillarticles.viewmodels.ArticleViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
-import ru.skillbranch.skillarticles.viewmodels.base.ViewModelFactory
 
 
 class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
 
     override val layout: Int = R.layout.activity_root
-    override val viewModel: ArticleViewModel by lazy {
-        val vmFactory = ViewModelFactory("0")
-        ViewModelProviders.of(this, vmFactory).get(ArticleViewModel::class.java)
-    }
+    override val viewModel: ArticleViewModel by provideViewModel("0")
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     override val binding: ArticleBinding by lazy { ArticleBinding() }
@@ -109,12 +105,12 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
 
     override fun showSearchBar() {
         bottombar.setSearchState(true)
-        //TODO: scroll.setMarginOptionally(bottom = dpToIntPx(56))
+        scroll.setMarginOptionally(bottom = dpToIntPx(56))
     }
 
     override fun hideSearchBar() {
         bottombar.setSearchState(false)
-        //TODO: scroll.setMarginOptionally(bottom = dpToIntPx(0))
+        scroll.setMarginOptionally(bottom = dpToIntPx(0))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -315,12 +311,14 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
             if (data.title != null) title = data.title
             if (data.category != null) category = data.category
             if (data.categoryIcon != null) categoryIcon = data.categoryIcon as Int
+            if (data.content.isNotEmpty()) content = data.content.first() as String
 
             isLoadingContent = data.isLoadingContent
             isSearch = data.isSearch
             searchQuery = data.searchQuery
             searchPosition = data.searchPosition
             searchResults = data.searchResults
+
         }
 
         override fun saveUi(outState: Bundle) {
