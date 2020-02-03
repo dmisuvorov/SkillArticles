@@ -17,7 +17,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
 
     abstract fun renderNotification(notify: Notify)
 
-    internal inline fun <reified VM : T> provideViewModel(arg: Any?): ViewModelDelegate<VM> {
+    internal inline fun <reified VM : T> provideViewModel(arg: Any): ViewModelDelegate<VM> {
         return ViewModelDelegate(VM::class.java, arg)
     }
 
