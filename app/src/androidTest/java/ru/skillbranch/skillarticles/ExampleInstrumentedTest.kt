@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import ru.skillbranch.skillarticles.data.*
 import ru.skillbranch.skillarticles.extensions.format
+import ru.skillbranch.skillarticles.extensions.indexesOf
 import ru.skillbranch.skillarticles.viewmodels.ArticleState
 import ru.skillbranch.skillarticles.viewmodels.ArticleViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
@@ -223,6 +224,11 @@ class ExampleInstrumentedTest {
 
             }
 
+    }
+
+    @Test
+    fun testExtensionString() {
+        "".indexesOf("")
     }
 
 }
