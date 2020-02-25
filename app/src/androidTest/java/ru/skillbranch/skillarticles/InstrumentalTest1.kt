@@ -145,7 +145,7 @@ class InstrumentedTest1 {
         val defaultAscent = -30
         val defaultDescent = 10
 
-        for (level in levels){
+        for (level in levels) {
             //mocks
             val canvas = mock(Canvas::class.java)
             `when`(canvas.width).thenReturn(canvasWidth)
@@ -178,9 +178,12 @@ class InstrumentedTest1 {
             verify(drawPaint).color = textColor
 
             //check change line height
-            span.chooseHeight(text,0, text.length.inc(), 0,0, fm)
+            span.chooseHeight(text, 0, text.length.inc(), 0, 0, fm)
             assertEquals((defaultAscent - marginTop).toInt(), fm.ascent)
-            assertEquals(((defaultDescent - defaultAscent) * span.linePadding + marginBottom).toInt(), fm.descent)
+            assertEquals(
+                ((defaultDescent - defaultAscent) * span.linePadding + marginBottom).toInt(),
+                fm.descent
+            )
             assertEquals(fm.top, fm.ascent)
             assertEquals(fm.bottom, fm.descent)
 
@@ -193,11 +196,12 @@ class InstrumentedTest1 {
 
             val inOrder = inOrder(paint, canvas)
 
-            if(level == 1 || level ==2){
+            if (level == 1 || level == 2) {
                 inOrder.verify(paint).color = lineColor
                 val lh = (paint.descent() - paint.ascent()) * span.sizes[level]!!
                 val lineOffset = lbase + lh * span.linePadding
-                inOrder.verify(canvas).drawLine(0f, lineOffset, canvasWidth.toFloat(), lineOffset, paint)
+                inOrder.verify(canvas)
+                    .drawLine(0f, lineOffset, canvasWidth.toFloat(), lineOffset, paint)
 
                 inOrder.verify(paint).color = defaultColor
             }

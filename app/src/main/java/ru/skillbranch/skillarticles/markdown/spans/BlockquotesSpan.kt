@@ -39,13 +39,16 @@ class BlockquotesSpan(
     private inline fun Paint.withCustomColor(block: () -> Unit) {
         val oldColor = color
         val oldStyle = style
+        val oldWidth = strokeWidth
 
         color = lineColor
         style = Paint.Style.STROKE
+        strokeWidth = quoteWidth
 
         block()
 
         color = oldColor
         style = oldStyle
+        strokeWidth = oldWidth
     }
 }
