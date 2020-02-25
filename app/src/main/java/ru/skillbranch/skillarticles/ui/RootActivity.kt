@@ -278,7 +278,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
             MarkdownBuilder(this@RootActivity)
                 .markdownToSpan(it)
                 .run {
-                    tv_text_content.setText(it, TextView.BufferType.SPANNABLE)
+                    tv_text_content.setText(this, TextView.BufferType.SPANNABLE)
                 }
 
             tv_text_content.movementMethod = LinkMovementMethod.getInstance()
