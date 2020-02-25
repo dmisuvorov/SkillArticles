@@ -165,11 +165,11 @@ object MarkdownParser {
 
                 //11 -> NUMERIC LIST
                 11 -> {
-                    val reg = "^\\d+?\\. ".toRegex().find(string.subSequence(startIndex, endIndex))
+                    val reg = "^\\d+?\\.".toRegex().find(string.subSequence(startIndex, endIndex))
                     val order = reg!!.value
 
                     //text without "{\d. } "
-                    text = string.subSequence(startIndex.plus(order.length), endIndex)
+                    text = string.subSequence(startIndex.plus(order.length + 1), endIndex)
                     val subElements = clear(text.toString())
                     clearTextStringBuilder.append(if (subElements.isNullOrEmpty()) text else subElements)
 
@@ -350,11 +350,11 @@ object MarkdownParser {
 
                 //11 -> NUMERIC LIST
                 11 -> {
-                    val reg = "^\\d+?\\. ".toRegex().find(string.subSequence(startIndex, endIndex))
+                    val reg = "^\\d+?\\.".toRegex().find(string.subSequence(startIndex, endIndex))
                     val order = reg!!.value
 
                     //text without "{\d. } "
-                    text = string.subSequence(startIndex.plus(order.length), endIndex)
+                    text = string.subSequence(startIndex.plus(order.length.inc()), endIndex)
                     val subelements = findElements(text)
                     val element = Element.OrderedListItem(order, text, subelements)
                     parents.add(element)
