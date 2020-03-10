@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.text.Spannable
+import android.text.Spanned
 import android.widget.TextView
+import androidx.core.graphics.withTranslation
 
 @SuppressLint("ViewConstructor")
 class MarkdownTextView constructor(
@@ -25,7 +27,11 @@ class MarkdownTextView constructor(
 
 
     override fun onDraw(canvas: Canvas) {
-        //TODO implement me
+        if (text is Spanned && layout != null) {
+            canvas.withTranslation (totalPaddingLeft.toFloat(), totalPaddingRight.toFloat()) {
+                searchBgHelper.draw(canvas, text as Spanned, layout)
+            }
+        }
         super.onDraw(canvas)
     }
 }

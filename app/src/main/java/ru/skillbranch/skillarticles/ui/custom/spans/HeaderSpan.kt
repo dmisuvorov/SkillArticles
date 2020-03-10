@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.markdown.spans
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -41,6 +41,9 @@ class HeaderSpan constructor(
         5 to 0.875f,
         6 to 0.85f
     )
+
+    var topExtraPadding = 0
+    var bottomExtraPadding = 0
 
     override fun chooseHeight(
         text: CharSequence?,
