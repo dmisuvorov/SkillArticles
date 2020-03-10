@@ -103,15 +103,27 @@ class SearchBgHelper(
             bottomExtraPadding = 0
 
             if (headerSpans.isNotEmpty()) {
-                //TODO
-                topExtraPadding
+                topExtraPadding =
+                    if (spanStart in headerSpans[0].firstLineBounds || spanEnd in headerSpans[0].firstLineBounds) headerSpans[0].topExtraPadding else 0
+                bottomExtraPadding =
+                    if (spanStart in headerSpans[0].lastLineBounds || spanEnd in headerSpans[0].lastLineBounds) headerSpans[0].bottomExtraPadding else 0
+
             }
 
             startOffset = layout.getPrimaryHorizontal(spanStart).toInt() //отступ от начала строки
             endOffset = layout.getPrimaryHorizontal(spanEnd).toInt() //отступ от конца строки
 
             render = if (startLine == endLine) singleLineRender else multiLineRender
-            render.draw(canvas, layout, startLine, endLine, startOffset, endOffset)
+            render.draw(
+                canvas,
+                layout,
+                startLine,
+                endLine,
+                startOffset,
+                endOffset,
+                topExtraPadding,
+                bottomExtraPadding
+            )
         }
     }
 }
@@ -171,6 +183,10 @@ class MultiLineRender(
     private val drawableMiddle: Drawable,
     private val drawableRight: Drawable
 ) : SearchBgRender(padding) {
+    private var lineTop: Int = 0
+    private var lineBottom: Int = 0
+    private var lineEndOffset: Int = 0
+    private var lineStartOffset: Int = 0
 
     override fun draw(
         canvas: Canvas,
@@ -182,7 +198,30 @@ class MultiLineRender(
         topExtraPadding: Int,
         bottomExtraPadding: Int
     ) {
-        //TODO implement me
+        //draw first line
+        lineEndOffset = (layout.getLineRight(startLine) + padding).toInt()
+        lineTop = getLineTop(layout, startLine) + topExtraPadding
+        lineBottom = getLineBottom(layout, startLine)
+        drawStart(canvas, startOffset - padding, lineTop, lineEndOffset, lineBottom)
+
+        //draw middle line
+        for (line in startLine.inc() until endLine) {
+            lineTop = getLineTop(layout, line)
+            lineBottom = getLineBottom(layout, line)
+            drawableMiddle.setBounds(
+                layout.getLineLeft(line).toInt() - padding,
+                lineTop,
+                layout.getLineRight(line).toInt() + padding,
+                lineBottom
+            )
+            drawableMiddle.draw(canvas)
+        }
+
+        //draw last line
+        lineStartOffset = (layout.getLineLeft(startLine) - padding).toInt()
+        lineTop = getLineTop(layout, startLine)
+        lineBottom = getLineBottom(layout, startLine) - bottomExtraPadding
+        drawEnd(canvas, lineStartOffset, lineTop, endOffset + padding, lineBottom)
     }
 
     private fun drawStart(
@@ -192,7 +231,8 @@ class MultiLineRender(
         end: Int,
         bottom: Int
     ) {
-        //TODO implement me
+        drawableLeft.setBounds(start, top, end, bottom)
+        drawableLeft.draw(canvas)
     }
 
     private fun drawEnd(
@@ -202,6 +242,7 @@ class MultiLineRender(
         end: Int,
         bottom: Int
     ) {
-        //TODO implement me
+        drawableRight.setBounds(start, top, end, bottom)
+        drawableRight.draw(canvas)
     }
 }
