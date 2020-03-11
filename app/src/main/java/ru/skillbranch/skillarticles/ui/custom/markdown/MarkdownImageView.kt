@@ -72,10 +72,8 @@ class MarkdownImageView private constructor(
     }
 
     init {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         iv_image = ImageView(context).apply {
-            scaleType = ImageView.ScaleType.CENTER_CROP
-            setImageResource(R.drawable.ic_launcher_background)
             outlineProvider = object : ViewOutlineProvider() {
                 override fun getOutline(view: View, outline: Outline) {
                     outline.setRoundRect(
@@ -88,8 +86,7 @@ class MarkdownImageView private constructor(
         }
         addView(iv_image)
 
-        tv_title = MarkdownTextView(context).apply {
-            setText("title", TextView.BufferType.SPANNABLE)
+        tv_title = MarkdownTextView(context, fontSize * 0.75f).apply {
             setTextColor(colorOnBackground)
             gravity = Gravity.CENTER
             typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
@@ -145,8 +142,7 @@ class MarkdownImageView private constructor(
         val ms = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
 
         iv_image.measure(ms, heightMeasureSpec)
-//        tv_title.measure(ms, heightMeasureSpec)
-        measureChild(tv_title, ms, heightMeasureSpec)
+        tv_title.measure(ms, heightMeasureSpec)
         tv_alt?.measure(widthMeasureSpec, heightMeasureSpec)
 
         usedHeight += iv_image.measuredHeight
