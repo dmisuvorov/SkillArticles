@@ -72,6 +72,8 @@ class MarkdownImageView private constructor(
     }
 
     init {
+//        setBackgroundColor(Color.RED)
+
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         iv_image = ImageView(context).apply {
             outlineProvider = object : ViewOutlineProvider() {

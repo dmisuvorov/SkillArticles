@@ -31,11 +31,36 @@ object MarkdownParser {
     /**
      * parse markdown text to elements
      */
-    fun parse(string: String): MarkdownText {
+    fun parse(string: String): List<MarkdownElement> {
         val elements = mutableListOf<Element>()
-
         elements.addAll(findElements(string))
-        return MarkdownText(elements)
+        return elements.fold(mutableListOf()) { acc, element ->
+            val last = acc.lastOrNull()
+            when (element) {
+                is Element.Image -> acc.add(
+                    MarkdownElement.Image(
+                        element,
+                        last?.bounds?.second ?: 0
+                    )
+                )
+                is Element.BlockCode -> acc.add(
+                    MarkdownElement.Scroll(
+                        element,
+                        last?.bounds?.second ?: 0
+                    )
+                )
+                else -> {
+                    if (last is MarkdownElement.Text) last.elements.add(element)
+                    else acc.add(
+                        MarkdownElement.Text(
+                            mutableListOf(element),
+                            last?.bounds?.second ?: 0
+                        )
+                    )
+                }
+            }
+            acc
+        }
     }
 
     /**
@@ -59,8 +84,8 @@ object MarkdownParser {
             //found text
             var text: CharSequence
 
-            //groups range for iterate by groups (1..9) or (1..11) optionally
-            val groups = 1..11
+            //groups range for iterate by groups
+            val groups = 1..12
             var group = -1
             for (gr in groups) {
                 if (matcher.group(gr) != null) {
@@ -561,5 +586,18 @@ private fun Element.clearContent(): String {
         val element = this@clearContent
         if (element.elements.isEmpty()) append(element.text)
         else element.elements.forEach { append(it.clearContent()) }
+    }.toString()
+}
+
+fun List<MarkdownElement>.clearContent(): String {
+    return StringBuilder().apply {
+        this@clearContent.forEach {
+            when (it) {
+                is MarkdownElement.Text -> it.elements.forEach { el -> append(el.clearContent()) }
+                is MarkdownElement.Image -> append(it.image.clearContent())
+                is MarkdownElement.Scroll -> append(it.blockCode.clearContent())
+
+            }
+        }
     }.toString()
 }
