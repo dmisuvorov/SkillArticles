@@ -1,20 +1,14 @@
 package ru.skillbranch.skillarticles.ui
 
 import android.os.Bundle
-import android.text.Selection
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.text.getSpans
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.layout_bottombar.*
@@ -24,12 +18,8 @@ import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
-import ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownBuilder
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
 import ru.skillbranch.skillarticles.ui.base.Binding
-import ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownImageView
-import ru.skillbranch.skillarticles.ui.custom.spans.SearchFocusSpan
-import ru.skillbranch.skillarticles.ui.custom.spans.SearchSpan
 import ru.skillbranch.skillarticles.ui.delegates.ObserveProp
 import ru.skillbranch.skillarticles.ui.delegates.RenderProp
 import ru.skillbranch.skillarticles.viewmodels.ArticleState
@@ -50,48 +40,6 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         initToolbar()
         initBottomBar()
         initSubmenu()
-    }
-
-    override fun renderSearchResult(searchResult: List<Pair<Int, Int>>) {
-        val content = tv_text_content.text as Spannable
-
-        //clear entry search result
-        clearSearchResult()
-
-        searchResult.forEach { (start, end) ->
-            content.setSpan(
-                SearchSpan(),
-                start,
-                end,
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-    }
-
-    override fun renderSearchPosition(searchPosition: Int) {
-        val content = tv_text_content.text as Spannable
-
-        val spans = content.getSpans<SearchSpan>()
-        //clear last search position
-        content.getSpans<SearchFocusSpan>().forEach { content.removeSpan(it) }
-
-        if (spans.isNotEmpty()) {
-            //find position span
-            val result = spans[searchPosition]
-            Selection.setSelection(content, content.getSpanStart(result))
-            content.setSpan(
-                SearchFocusSpan(),
-                content.getSpanStart(result),
-                content.getSpanEnd(result),
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-    }
-
-    override fun clearSearchResult() {
-        val content = tv_text_content.text as Spannable
-        content.getSpans<SearchSpan>()
-            .forEach { content.removeSpan(it) }
     }
 
     override fun showSearchBar() {
@@ -281,11 +229,11 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
             ) { ilc, iss, sr, sp ->
 
                 if (!ilc && iss) {
-                    renderSearchResult(sr)
-                    renderSearchPosition(sp)
+                    tv_text_content.renderSearchResult(sr)
+                    tv_text_content.renderSearchPosition(sr.getOrNull(sp))
                 }
                 if (!ilc && !iss) {
-                    clearSearchResult()
+                    tv_text_content.clearSearchResult()
                 }
 
                 bottombar.bindSearchInfo(sr.size, sp)

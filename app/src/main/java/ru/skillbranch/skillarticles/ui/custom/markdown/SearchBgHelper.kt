@@ -12,6 +12,7 @@ import androidx.core.text.getSpans
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.*
 import ru.skillbranch.skillarticles.ui.custom.spans.HeaderSpan
+import ru.skillbranch.skillarticles.ui.custom.spans.SearchFocusSpan
 import ru.skillbranch.skillarticles.ui.custom.spans.SearchSpan
 
 class SearchBgHelper(
@@ -96,6 +97,11 @@ class SearchBgHelper(
             spanEnd = text.getSpanEnd(it)
             startLine = layout.getLineForOffset(spanStart)
             endLine = layout.getLineForOffset(spanEnd)
+
+            if (it is SearchFocusSpan) {
+                //if search focus invoke listener for focus
+                focusListener.invoke(layout.getLineTop(startLine))
+            }
 
             headerSpans = text.getSpans(spanStart, spanEnd, HeaderSpan::class.java)
 
