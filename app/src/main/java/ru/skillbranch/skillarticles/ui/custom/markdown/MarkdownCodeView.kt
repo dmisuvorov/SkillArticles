@@ -146,6 +146,7 @@ class MarkdownCodeView private constructor(
         }
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var usedHeight = 0
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
@@ -155,6 +156,7 @@ class MarkdownCodeView private constructor(
         setMeasuredDimension(width, usedHeight)
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val usedHeight = paddingTop
         val bodyWidth = r - l - paddingLeft - paddingRight
