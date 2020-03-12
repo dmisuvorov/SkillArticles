@@ -82,7 +82,6 @@ class MarkdownImageView private constructor(
 
     init {
 //        setBackgroundColor(Color.RED)
-
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         iv_image = ImageView(context).apply {
             outlineProvider = object : ViewOutlineProvider() {
@@ -235,12 +234,39 @@ class MarkdownImageView private constructor(
         va.start()
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.isVisibleAltMode = tv_alt?.isVisible ?: false
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) {
+            tv_alt?.isVisible = state.isVisibleAltMode
+        }
+    }
+
     private class SavedState : BaseSavedState, Parcelable {
+        var isVisibleAltMode: Boolean = false
 
         constructor(superState: Parcelable?) : super(superState)
 
         constructor(src: Parcel) : super(src) {
+            isVisibleAltMode = src.readInt() == 1
+        }
 
+        override fun writeToParcel(dst: Parcel, flags: Int) {
+            super.writeToParcel(dst, flags)
+            dst.writeInt(if (isVisibleAltMode) 1 else 0)
+        }
+
+        override fun describeContents() = 0
+
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel) = SavedState(parcel)
+
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
 }
