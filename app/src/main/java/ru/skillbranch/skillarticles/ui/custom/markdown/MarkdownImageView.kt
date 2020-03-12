@@ -3,6 +3,8 @@ package ru.skillbranch.skillarticles.ui.custom.markdown
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.Spannable
 import android.view.*
 import android.widget.ImageView
@@ -46,7 +48,7 @@ class MarkdownImageView private constructor(
     //views
     private lateinit var imageUrl: String
     private lateinit var imageTitle: CharSequence
-    
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val iv_image: ImageView
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -142,7 +144,7 @@ class MarkdownImageView private constructor(
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var usedHeight = 0
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
@@ -163,7 +165,7 @@ class MarkdownImageView private constructor(
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+    public override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         var usedHeight = 0
         val bodyWidth = r - l - paddingLeft - paddingRight
         val left = paddingLeft
@@ -194,7 +196,7 @@ class MarkdownImageView private constructor(
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    override fun dispatchDraw(canvas: Canvas) {
+    public override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
         canvas.drawLine(0f, linePositionY, titlePadding.toFloat(), linePositionY, linePaint)
         canvas.drawLine(
@@ -232,6 +234,15 @@ class MarkdownImageView private constructor(
         va.doOnEnd { tv_alt?.isVisible = false }
         va.start()
     }
+
+    private class SavedState : BaseSavedState, Parcelable {
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(src: Parcel) : super(src) {
+
+        }
+    }
 }
 
 class AspectRatioResizeTransform : BitmapTransformation() {
@@ -263,3 +274,4 @@ class AspectRatioResizeTransform : BitmapTransformation() {
 
     override fun hashCode(): Int = ID.hashCode()
 }
+
