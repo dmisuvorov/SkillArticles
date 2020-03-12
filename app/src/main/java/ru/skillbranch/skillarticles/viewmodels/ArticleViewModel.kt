@@ -152,6 +152,10 @@ class ArticleViewModel(private val articleId: String) : BaseViewModel<ArticleSta
         updateState { it.copy(searchPosition = it.searchPosition.inc()) }
     }
 
+    fun handleCopyCode() {
+        notify(Notify.TextMessage("Code copy to clipboard"))
+    }
+
 }
 
 @Suppress("UNCHECKED_CAST")

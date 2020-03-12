@@ -2,7 +2,6 @@ package ru.skillbranch.skillarticles.ui.custom.markdown
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
@@ -28,7 +27,7 @@ class MarkdownContentView @JvmOverloads constructor(
         }
     }  //14
     var isLoading: Boolean = true
-    val padding //8dp
+    val padding = context.dpToIntPx(8) //8dp
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var usedHeight = paddingTop
@@ -103,7 +102,12 @@ class MarkdownContentView @JvmOverloads constructor(
                     addView(iv)
                 }
                 is MarkdownElement.Scroll -> {
-                    //TODO implement me
+                    val sv = MarkdownCodeView(
+                        context,
+                        textSize,
+                        it.blockCode.text
+                    )
+                    addView(sv)
                 }
             }
         }
@@ -153,6 +157,7 @@ class MarkdownContentView @JvmOverloads constructor(
     }
 
     fun setCopyListener(listener: (String) -> Unit) {
-        //TODO implement me
+        children.filterIsInstance<MarkdownCodeView>()
+            .forEach { it.copyListener = listener }
     }
 }
