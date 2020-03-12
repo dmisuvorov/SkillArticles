@@ -253,8 +253,8 @@ object MarkdownParser {
             //found text
             var text: CharSequence
 
-            //groups range for iterate by groups (1..9) or (1..11) optionally
-            val groups = 1..11
+            //groups range for iterate by groups
+            val groups = 1..12
             var group = -1
             for (gr in groups) {
                 if (matcher.group(gr) != null) {
@@ -460,8 +460,6 @@ object MarkdownParser {
         return parents
     }
 }
-
-data class MarkdownText(val elements: List<Element>)
 
 sealed class MarkdownElement() {
     abstract val offset: Int
