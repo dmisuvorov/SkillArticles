@@ -1,9 +1,12 @@
 package ru.skillbranch.skillarticles.ui.custom.markdown
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
@@ -161,5 +164,47 @@ class MarkdownContentView @JvmOverloads constructor(
     fun setCopyListener(listener: (String) -> Unit) {
         children.filterIsInstance<MarkdownCodeView>()
             .forEach { it.copyListener = listener }
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.arrOfChildId = IntArray(childCount)
+        children.forEachIndexed { index, child ->
+            savedState.arrOfChildId[index] = ViewCompat.generateViewId()
+            child.id = savedState.arrOfChildId[index]
+        }
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) {
+            children.forEachIndexed { index, child ->
+                child.id = state.arrOfChildId[index]
+            }
+        }
+    }
+
+    private class SavedState : BaseSavedState, Parcelable {
+        var arrOfChildId = intArrayOf()
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(src: Parcel) : super(src) {
+            src.readIntArray(arrOfChildId)
+        }
+
+        override fun writeToParcel(dst: Parcel, flags: Int) {
+            super.writeToParcel(dst, flags)
+            dst.writeIntArray(arrOfChildId)
+        }
+
+        override fun describeContents() = 0
+
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel) = SavedState(parcel)
+
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+        }
     }
 }
