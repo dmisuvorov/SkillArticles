@@ -234,8 +234,8 @@ class MultiLineRender(
         }
 
         //draw last line
-        lineStartOffset = (layout.getLineLeft(startLine) - padding).toInt()
-        lineTop = getLineTop(layout, startLine)
+        lineStartOffset = (layout.getLineLeft(endLine) - padding).toInt()
+        lineTop = getLineTop(layout, endLine)
         lineBottom = getLineBottom(layout, endLine) - bottomExtraPadding
         drawEnd(canvas, lineStartOffset, lineTop, endOffset + padding, lineBottom)
     }
