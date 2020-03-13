@@ -21,6 +21,9 @@ class MarkdownTextView constructor(
     fontSize: Float,
     mockHelper: SearchBgHelper? = null //for mock
 ) : TextView(context, null, 0), IMarkdownView {
+
+    constructor(context: Context, fontSize: Float) : this(context, fontSize, null)
+
     override var fontSize: Float = fontSize
         set(value) {
             textSize = value
@@ -30,9 +33,9 @@ class MarkdownTextView constructor(
     override val spannableContent: Spannable
         get() = text as Spannable
 
-    private val color = context.attrValue(R.attr.colorOnBackground) //colorOnBackground
+    val color = context.attrValue(R.attr.colorOnBackground) //colorOnBackground
     private val focusRect = Rect()
-    
+
     @SuppressLint("VisibleForTests")
     private val searchBgHelper: SearchBgHelper
 
