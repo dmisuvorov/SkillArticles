@@ -14,6 +14,7 @@ import ru.skillbranch.skillarticles.extensions.groupByBounds
  */
 class ExampleUnitTest {
 
+
     @Test
     fun test_group_by_bounds() {
         val listResult = mutableListOf(2 to 5, 8 to 20, 22 to 30, 45 to 50, 70 to 100)

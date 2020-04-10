@@ -237,6 +237,7 @@ class MarkdownImageView private constructor(
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.isVisibleAltMode = tv_alt?.isVisible ?: false
+        savedState.ssAspectRatio = (iv_image.width.toFloat() / iv_image.height)
         return savedState
     }
 
@@ -244,11 +245,13 @@ class MarkdownImageView private constructor(
         super.onRestoreInstanceState(state)
         if (state is SavedState) {
             tv_alt?.isVisible = state.isVisibleAltMode
+
         }
     }
 
     private class SavedState : BaseSavedState, Parcelable {
         var isVisibleAltMode: Boolean = false
+        var ssAspectRatio: Float = 0f
 
         constructor(superState: Parcelable?) : super(superState)
 
