@@ -1,6 +1,7 @@
 package ru.skillbranch.skillarticles.ui.custom
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
@@ -12,13 +13,15 @@ import ru.skillbranch.skillarticles.data.ArticleItemData
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.format
 
-class ArticleItemView(
-    context: Context
-) : ConstraintLayout(context) {
+class ArticleItemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
         requestLayout()
-        View.inflate(context, R.layout.item_article, this)
+//        View.inflate(context, R.layout.item_article, this)
     }
 
     fun bind(data: ArticleItemData) {
