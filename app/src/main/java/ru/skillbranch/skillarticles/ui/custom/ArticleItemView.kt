@@ -41,7 +41,7 @@ class ArticleItemView @JvmOverloads constructor(
             .load(data.categoryIcon)
             .transform(CenterCrop(), RoundedCorners(cornerRadius))
             .override(categorySize)
-            .into(iv_poster)
+            .into(iv_category)
 
         tv_date.text = data.date.format()
         tv_author.text = data.author
