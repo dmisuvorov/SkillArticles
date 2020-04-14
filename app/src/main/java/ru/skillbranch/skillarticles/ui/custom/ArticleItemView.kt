@@ -2,7 +2,9 @@ package ru.skillbranch.skillarticles.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -20,8 +22,8 @@ class ArticleItemView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
-        requestLayout()
-//        View.inflate(context, R.layout.item_article, this)
+        LayoutInflater.from(context).inflate(R.layout.item_article, this, true)
+        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun bind(data: ArticleItemData) {
