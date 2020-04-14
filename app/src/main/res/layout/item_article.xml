@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp"
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -53,7 +52,7 @@
             app:layout_constraintEnd_toStartOf="@id/iv_poster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier_top"
-            tools:text="Инженеры создали 3D-дисплей из «Звёздных войн» 3D-дисплей из «Звёздных войн» 3D-дисплей из «Звёздных войн»" />
+            tools:text="3D-дисплей из «Звёздных войн»" />
 
         <ImageView
             android:id="@+id/iv_poster"
