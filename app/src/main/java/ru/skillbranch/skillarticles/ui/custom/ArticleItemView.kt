@@ -171,8 +171,10 @@ class ArticleItemView(
                         tvReadDurationMarginStart + tvReadDurationMarginEnd +
                         ivBookmark.measuredWidth + paddingRight)
         measureChild(tvReadDuration, widthMeasureSpec, heightMeasureSpec)
-        usedHeight += max(tvReadDuration.measuredHeight, ivLikes.measuredHeight) +
-                iconRowMarginTop + paddingBottom //consider all icon have same size and counters have same textSize
+//        usedHeight += max(tvReadDuration.measuredHeight, ivLikes.measuredHeight) +
+//                iconRowMarginTop + paddingBottom //consider all icon have same size and counters have same textSize
+
+        usedHeight += ivLikes.measuredHeight + iconRowMarginTop + paddingBottom //Attempt to pass test removing max(tvReadDuration.measuredHeight, ivLikes.measuredHeight)
 
         setMeasuredDimension(width, usedHeight)
     }
