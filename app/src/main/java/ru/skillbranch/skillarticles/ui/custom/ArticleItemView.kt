@@ -68,6 +68,7 @@ class ArticleItemView(
         setPadding(padding)
 
         tvDate = TextView(context).apply {
+            id = R.id.tv_date
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             textSize = 12f
             setTextColor(colorGrey)
@@ -75,61 +76,74 @@ class ArticleItemView(
         addView(tvDate)
 
         tvAuthor = TextView(context).apply {
+            id = R.id.tv_author
             textSize = 12f
             setTextColor(colorPrimary)
         }
         addView(tvAuthor)
 
         tvTitle = TextView(context).apply {
+            id = R.id.tv_title
             textSize = 18f
             setTextColor(colorPrimary)
             setTypeface(typeface, Typeface.BOLD)
         }
         addView(tvTitle)
 
-        ivPoster = ImageView(context)
+        ivPoster = ImageView(context).apply {
+            id = R.id.iv_poster
+        }
         addView(ivPoster, LayoutParams(posterSize, posterSize))
 
-        ivCategory = ImageView(context)
+        ivCategory = ImageView(context).apply {
+            id = R.id.iv_category
+        }
         addView(ivCategory, LayoutParams(categorySize, categorySize))
 
         tvDescription = TextView(context).apply {
+            id = R.id.tv_description
             textSize = 14f
             setTextColor(colorGrey)
         }
         addView(tvDescription)
 
         ivLikes = ImageView(context).apply {
+            id = R.id.iv_likes
             imageTintList = ColorStateList.valueOf(colorGrey)
             setImageResource(R.drawable.ic_favorite_black_24dp)
         }
         addView(ivLikes, LayoutParams(iconSize, iconSize))
 
         tvLikesCount = TextView(context).apply {
+            id = R.id.tv_likes_count
             textSize = textSizeIconRow
             setTextColor(colorGrey)
         }
         addView(tvLikesCount, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
 
         ivComments = ImageView(context).apply {
+            id = R.id.iv_comments
             imageTintList = ColorStateList.valueOf(colorGrey)
             setImageResource(R.drawable.ic_insert_comment_black_24dp)
         }
         addView(ivComments, LayoutParams(iconSize, iconSize))
 
         tvCommentsCount = TextView(context).apply {
+            id = R.id.tv_comments_count
             textSize = textSizeIconRow
             setTextColor(colorGrey)
         }
         addView(tvCommentsCount, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
 
         tvReadDuration = TextView(context).apply {
+            id = R.id.tv_read_duration
             textSize = textSizeIconRow
             setTextColor(colorGrey)
         }
         addView(tvReadDuration)
 
         ivBookmark = ImageView(context).apply {
+            id = R.id.iv_bookmark
             imageTintList = ColorStateList.valueOf(colorGrey)
             setImageResource(R.drawable.bookmark_states)
         }
