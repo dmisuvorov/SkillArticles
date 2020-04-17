@@ -162,12 +162,12 @@ class ArticleItemView(
 
         measureChild(ivPoster, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivCategory, widthMeasureSpec, heightMeasureSpec)
-        tvTitle.maxWidth =
-            width - (ivPoster.measuredWidth + paddingRight + paddingLeft + tvTitleMarginEnd)
-        measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
-        val heightOfPosterAndCategoryImage =
+        val sizeOfPosterAndCategoryImage =
             ivPoster.measuredHeight + (ivCategory.measuredHeight / 2)
-        usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, heightOfPosterAndCategoryImage)
+        tvTitle.maxWidth =
+            width - (sizeOfPosterAndCategoryImage + paddingRight + paddingLeft + context.dpToIntPx(8))
+        measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
+        usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, sizeOfPosterAndCategoryImage)
 
         tvDescription.maxWidth = width - (paddingLeft + paddingRight)
         measureChild(tvDescription, widthMeasureSpec, heightMeasureSpec)
@@ -222,7 +222,7 @@ class ArticleItemView(
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         } else {
-            topOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight
+            topOfTvTitle = usedHeight + tvTitleMarginTop
             topOfIvPoster = usedHeight + ivPosterMarginTop +
                     ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
@@ -246,9 +246,9 @@ class ArticleItemView(
             ivPoster.bottom + ivCategory.measuredWidth / 2
         )
         usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
-            ivPosterMarginTop + ivPoster.measuredHeight + ivPosterMarginBottom //consider height ivCategory included into ivPosterMarginBottom
+            ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
-            tvTitleMarginTop + tvTitle.measuredHeight + tvTitleMarginBottom
+            tvTitleMarginTop + tvTitle.measuredHeight
         }
 
         val topOfTvDescription = usedHeight + tvDescriptionMarginTop
