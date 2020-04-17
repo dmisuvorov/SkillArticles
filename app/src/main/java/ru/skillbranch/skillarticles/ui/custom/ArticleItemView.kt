@@ -162,10 +162,9 @@ class ArticleItemView(
 
         measureChild(ivPoster, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivCategory, widthMeasureSpec, heightMeasureSpec)
-        val sizeOfPosterAndCategoryImage =
-            ivPoster.measuredHeight + (ivCategory.measuredHeight / 2)
+        val sizeOfPosterAndCategoryImage = posterSize + (categorySize / 2)
         tvTitle.maxWidth =
-            width - (sizeOfPosterAndCategoryImage + paddingRight + paddingLeft + context.dpToIntPx(4))
+            width - (paddingRight + paddingLeft + tvTitleMarginEnd + ivPoster.measuredWidth)
         measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, sizeOfPosterAndCategoryImage)
 
@@ -211,27 +210,26 @@ class ArticleItemView(
         )
         usedHeight += max(tvDate.measuredHeight, tvAuthor.measuredHeight)
 
-        val heightOfPosterAndCategoryImage =
-            ivPoster.measuredHeight + (ivCategory.measuredHeight / 2)
-        val topOfTvTitle: Int
+        val heightOfPosterAndCategoryImage = posterSize + (categorySize / 2)
+        val bottomOfTvTitle: Int
         val topOfIvPoster: Int
         val leftOfIvPoster: Int
         if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
-            topOfTvTitle = usedHeight + tvTitleMarginTop +
-                    ((heightOfPosterAndCategoryImage - tvTitle.measuredHeight) / 2)
+            bottomOfTvTitle = usedHeight + tvTitleMarginTop + ivPoster.measuredHeight
+//                    ((heightOfPosterAndCategoryImage - tvTitle.measuredHeight) / 2)
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         } else {
-            topOfTvTitle = usedHeight + tvTitleMarginTop
+            bottomOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight
             topOfIvPoster = usedHeight + ivPosterMarginTop +
                     ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         }
         tvTitle.layout(
             paddingLeft,
-            topOfTvTitle,
+            bottomOfTvTitle - tvTitle.measuredHeight,
             paddingLeft + tvTitle.measuredWidth,
-            topOfTvTitle + tvTitle.measuredHeight
+            bottomOfTvTitle
         )
         ivPoster.layout(
             leftOfIvPoster,
