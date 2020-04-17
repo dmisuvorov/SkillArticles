@@ -62,7 +62,7 @@ class ArticleVH(override val containerView: View) : RecyclerView.ViewHolder(cont
 //            .load(item.categoryIcon)
 //            .transform(CenterCrop(), RoundedCorners(cornerRadius))
 //            .override(categorySize)
-//            .into(iv_poster)
+//            .into(iv_category)
 //
 //        tv_date.text = item.date.format()
 //        tv_author.text = item.author

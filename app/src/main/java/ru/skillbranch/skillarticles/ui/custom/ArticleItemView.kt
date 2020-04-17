@@ -220,7 +220,7 @@ class ArticleItemView(
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         } else {
-            bottomOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight
+            bottomOfTvTitle = usedHeight + tvTitle.measuredHeight
             topOfIvPoster = usedHeight + ivPosterMarginTop +
                     ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
@@ -246,10 +246,11 @@ class ArticleItemView(
         usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
             ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
-            tvTitleMarginTop + tvTitle.measuredHeight
+            ivPosterMarginTop +
+                    ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2) + heightOfPosterAndCategoryImage
         }
 
-        val topOfTvDescription = usedHeight + tvDescriptionMarginTop
+       val topOfTvDescription = usedHeight + tvDescriptionMarginTop
         tvDescription.layout(
             paddingLeft,
             topOfTvDescription,
