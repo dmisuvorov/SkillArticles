@@ -214,20 +214,20 @@ class ArticleItemView(
         val bottomOfTvTitle: Int
         val topOfIvPoster: Int
         val leftOfIvPoster: Int
-        if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
+        if (heightOfPosterAndCategoryImage > tvTitle.height) {
             bottomOfTvTitle = usedHeight + tvTitleMarginTop + ivPoster.measuredHeight
-                    (heightOfPosterAndCategoryImage / 2)
+                    ((heightOfPosterAndCategoryImage - tvTitle.height) / 2)
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         } else {
-            bottomOfTvTitle = usedHeight + tvTitle.measuredHeight
+            bottomOfTvTitle = usedHeight + tvTitle.height
             topOfIvPoster = usedHeight + ivPosterMarginTop +
-                    (tvTitle.measuredHeight / 2)
+                    ((tvTitle.height - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
         }
         tvTitle.layout(
             paddingLeft,
-            bottomOfTvTitle - tvTitle.measuredHeight,
+            bottomOfTvTitle - tvTitle.height,
             paddingLeft + tvTitle.measuredWidth,
             bottomOfTvTitle
         )
@@ -243,11 +243,11 @@ class ArticleItemView(
             ivPoster.left + ivCategory.measuredWidth / 2,
             ivPoster.bottom + ivCategory.measuredWidth / 2
         )
-        usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
+        usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.height) {
             ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
             ivPosterMarginTop +
-                    ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2) + heightOfPosterAndCategoryImage
+                    ((tvTitle.height - heightOfPosterAndCategoryImage) / 2) + heightOfPosterAndCategoryImage
         }
 
        val topOfTvDescription = usedHeight + tvDescriptionMarginTop
