@@ -164,7 +164,7 @@ class ArticleItemView(
         measureChild(ivCategory, widthMeasureSpec, heightMeasureSpec)
         val sizeOfPosterAndCategoryImage = posterSize + (categorySize / 2)
         tvTitle.maxWidth =
-            width - (paddingRight + paddingLeft + tvTitleMarginEnd + ivPoster.measuredWidth)
+            width - (paddingRight + paddingLeft + sizeOfPosterAndCategoryImage + context.dpToIntPx(8)) //TODO context.dpToIntPx(4)
         measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, sizeOfPosterAndCategoryImage)
 
