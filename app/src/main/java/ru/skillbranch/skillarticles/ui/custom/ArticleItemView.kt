@@ -164,11 +164,11 @@ class ArticleItemView(
         measureChild(ivCategory, widthMeasureSpec, heightMeasureSpec)
         val sizeOfPosterAndCategoryImage = posterSize + (categorySize / 2)
         tvTitle.maxWidth =
-            width - (paddingRight + paddingLeft + tvTitleMarginEnd + ivPoster.measuredWidth)
+            width - (paddingRight + paddingLeft + sizeOfPosterAndCategoryImage + context.dpToIntPx(8)) //TODO context.dpToIntPx(4)
         measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, sizeOfPosterAndCategoryImage)
 
-        tvDescription.maxWidth = width - (paddingLeft + paddingRight)
+//        tvDescription.maxWidth = width - (paddingLeft + paddingRight)
         measureChild(tvDescription, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvDescription.measuredHeight + tvDescriptionMarginTop
 
@@ -177,12 +177,12 @@ class ArticleItemView(
         measureChild(ivComments, widthMeasureSpec, heightMeasureSpec)
         measureChild(tvCommentsCount, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivBookmark, widthMeasureSpec, heightMeasureSpec)
-        tvReadDuration.maxWidth = width -
-                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
-                        ivCommentsMarginStart + ivComments.measuredWidth +
-                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
-                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
-                        ivBookmark.measuredWidth + paddingRight)
+//        tvReadDuration.maxWidth = width -
+//                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
+//                        ivCommentsMarginStart + ivComments.measuredWidth +
+//                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
+//                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
+//                        ivBookmark.measuredWidth + paddingRight)
         measureChild(tvReadDuration, widthMeasureSpec, heightMeasureSpec)
 //        usedHeight += max(tvReadDuration.measuredHeight, ivLikes.measuredHeight) +
 //                iconRowMarginTop + paddingBottom //consider all icon have same size and counters have same textSize
@@ -246,7 +246,7 @@ class ArticleItemView(
         usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.height) {
             ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
-            ivPosterMarginTop + tvTitle.measuredHeight
+            tvTitleMarginTop + tvTitle.measuredHeight
         }
 
        val topOfTvDescription = usedHeight + tvDescriptionMarginTop
