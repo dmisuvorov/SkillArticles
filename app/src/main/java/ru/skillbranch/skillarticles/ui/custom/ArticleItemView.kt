@@ -163,6 +163,7 @@ class ArticleItemView(
         measureChild(ivPoster, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivCategory, widthMeasureSpec, heightMeasureSpec)
         val sizeOfPosterAndCategoryImage = posterSize + (categorySize / 2)
+//        tvTitle.maxWidth = width - (paddingLeft + paddingRight + ivPoster.measuredWidth + tvTitleMarginEnd)
         tvTitle.maxWidth =
             width - (paddingRight + paddingLeft + sizeOfPosterAndCategoryImage + context.dpToIntPx(8)) //TODO context.dpToIntPx(4)
         measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
@@ -214,16 +215,16 @@ class ArticleItemView(
         val bottomOfTvTitle: Int
         val topOfIvPoster: Int
         val leftOfIvPoster: Int
-        if (heightOfPosterAndCategoryImage > tvTitle.height) {
+        if (heightOfPosterAndCategoryImage > tvTitle.measuredHeight) {
             bottomOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight +
-                    ((heightOfPosterAndCategoryImage - tvTitle.height) / 2)
+                    ((heightOfPosterAndCategoryImage - tvTitle.measuredHeight) / 2)
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
             usedHeight += ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
             bottomOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight
             topOfIvPoster = usedHeight + ivPosterMarginTop +
-                    ((tvTitle.height - heightOfPosterAndCategoryImage) / 2)
+                    ((tvTitle.measuredHeight - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
             usedHeight += tvTitleMarginTop + tvTitle.measuredHeight
         }
