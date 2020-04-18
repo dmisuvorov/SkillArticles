@@ -290,7 +290,7 @@ class ArticleItemView(
         tvReadDuration.layout(
             leftOfTvReadDuration,
             topOfIcon,
-            leftOfTvReadDuration + measuredWidth, //TODO leftOfIvBookmark - tvReadDurationMarginEnd
+            leftOfTvReadDuration + tvReadDuration.measuredWidth, //TODO leftOfIvBookmark - tvReadDurationMarginEnd
             topOfIcon + tvReadDuration.measuredHeight
         )
         ivBookmark.layout(
