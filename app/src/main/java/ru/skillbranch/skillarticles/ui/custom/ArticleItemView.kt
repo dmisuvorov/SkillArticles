@@ -177,12 +177,12 @@ class ArticleItemView(
         measureChild(ivComments, widthMeasureSpec, heightMeasureSpec)
         measureChild(tvCommentsCount, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivBookmark, widthMeasureSpec, heightMeasureSpec)
-        tvReadDuration.maxWidth = width -
-                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
-                        ivCommentsMarginStart + ivComments.measuredWidth +
-                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
-                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
-                        ivBookmark.measuredWidth + paddingRight)
+//        tvReadDuration.maxWidth = width -
+//                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
+//                        ivCommentsMarginStart + ivComments.measuredWidth +
+//                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
+//                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
+//                        ivBookmark.measuredWidth + paddingRight)
         measureChild(tvReadDuration, widthMeasureSpec, heightMeasureSpec)
 //        usedHeight += max(tvReadDuration.measuredHeight, ivLikes.measuredHeight) +
 //                iconRowMarginTop + paddingBottom //consider all icon have same size and counters have same textSize
