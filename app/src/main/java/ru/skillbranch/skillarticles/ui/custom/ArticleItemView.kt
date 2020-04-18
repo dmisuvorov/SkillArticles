@@ -168,7 +168,7 @@ class ArticleItemView(
         measureChild(tvTitle, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvTitleMarginTop + max(tvTitle.measuredHeight, sizeOfPosterAndCategoryImage)
 
-//        tvDescription.maxWidth = width - (paddingLeft + paddingRight)
+        tvDescription.maxWidth = width - (paddingLeft + paddingRight)
         measureChild(tvDescription, widthMeasureSpec, heightMeasureSpec)
         usedHeight += tvDescription.measuredHeight + tvDescriptionMarginTop
 
@@ -177,12 +177,12 @@ class ArticleItemView(
         measureChild(ivComments, widthMeasureSpec, heightMeasureSpec)
         measureChild(tvCommentsCount, widthMeasureSpec, heightMeasureSpec)
         measureChild(ivBookmark, widthMeasureSpec, heightMeasureSpec)
-//        tvReadDuration.maxWidth = width -
-//                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
-//                        ivCommentsMarginStart + ivComments.measuredWidth +
-//                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
-//                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
-//                        ivBookmark.measuredWidth + paddingRight)
+        tvReadDuration.maxWidth = width -
+                (paddingLeft + ivLikes.measuredWidth + tvLikesCountMarginStart + tvLikesCount.measuredWidth +
+                        ivCommentsMarginStart + ivComments.measuredWidth +
+                        tvCommentsCountMarginStart + tvCommentsCount.measuredWidth +
+                        tvReadDurationMarginStart + tvReadDurationMarginEnd +
+                        ivBookmark.measuredWidth + paddingRight)
         measureChild(tvReadDuration, widthMeasureSpec, heightMeasureSpec)
 //        usedHeight += max(tvReadDuration.measuredHeight, ivLikes.measuredHeight) +
 //                iconRowMarginTop + paddingBottom //consider all icon have same size and counters have same textSize
@@ -219,11 +219,13 @@ class ArticleItemView(
                     ((heightOfPosterAndCategoryImage - tvTitle.height) / 2)
             topOfIvPoster = usedHeight + ivPosterMarginTop
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
+            usedHeight += ivPosterMarginTop + heightOfPosterAndCategoryImage
         } else {
             bottomOfTvTitle = usedHeight + tvTitleMarginTop + tvTitle.measuredHeight
             topOfIvPoster = usedHeight + ivPosterMarginTop +
                     ((tvTitle.height - heightOfPosterAndCategoryImage) / 2)
             leftOfIvPoster = width - paddingRight - ivPoster.measuredWidth
+            usedHeight += tvTitleMarginTop + tvTitle.measuredHeight
         }
         tvTitle.layout(
             paddingLeft,
@@ -243,11 +245,6 @@ class ArticleItemView(
             ivPoster.left + ivCategory.measuredWidth / 2,
             ivPoster.bottom + ivCategory.measuredWidth / 2
         )
-        usedHeight += if (heightOfPosterAndCategoryImage > tvTitle.height) {
-            ivPosterMarginTop + heightOfPosterAndCategoryImage
-        } else {
-            tvTitleMarginTop + tvTitle.measuredHeight
-        }
 
        val topOfTvDescription = usedHeight + tvDescriptionMarginTop
         tvDescription.layout(
