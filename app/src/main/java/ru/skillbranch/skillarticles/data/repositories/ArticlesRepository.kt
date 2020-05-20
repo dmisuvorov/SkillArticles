@@ -48,7 +48,7 @@ object ArticlesRepository {
     private fun searchBookmarkArticles(start: Int, size: Int, bookmarkTitle: String) =
         local.localArticleItems
             .asSequence()
-            .filter { it.isBookmark && it.title.contains(bookmarkTitle) }
+            .filter { it.isBookmark && it.title.contains(bookmarkTitle, true) }
             .drop(start)
             .take(size)
             .toList()

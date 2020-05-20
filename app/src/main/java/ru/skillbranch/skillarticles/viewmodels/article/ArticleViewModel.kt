@@ -260,23 +260,21 @@ data class ArticleState(
     val lastKey: String? = null
 ) : IViewModelState {
     override fun save(outState: SavedStateHandle) {
-        //TODO save state
         outState.set("isSearch", isSearch)
         outState.set("searchQuery", searchQuery)
         outState.set("searchResults", searchResults)
         outState.set("searchPosition", searchPosition)
-        outState.set("commentText", commentText)
+//        outState.set("commentText", commentText)
         outState.set("lastKey", lastKey)
     }
 
     override fun restore(savedState: SavedStateHandle): ArticleState {
-        //TODO restore state
         return copy(
             isSearch = savedState["isSearch"] ?: false,
             searchQuery = savedState["searchQuery"],
             searchResults = savedState["searchResults"] ?: emptyList(),
             searchPosition = savedState["searchPosition"] ?: 0,
-            commentText = savedState["commentText"],
+//            commentText = savedState["commentText"],
             lastKey = savedState["lastKey"]
         )
     }
