@@ -185,9 +185,9 @@ class ArticleViewModel(
         if (!currentState.isAuth) navigate(NavigationCommand.StartLogin())
         else {
             viewModelScope.launch {
-                repository.sendComment(articleId, comment, currentState.answerToSlug)
+                repository.sendComment(articleId, currentState.commentText!!, currentState.answerToSlug)
                 withContext(Dispatchers.Main) {
-                    updateState { it.copy(answerTo = null, answerToSlug = null, commentText = null, lastKey = null) }
+                    updateState { it.copy(answerTo = null, answerToSlug = null, commentText = null) }
                 }
             }
         }
@@ -207,7 +207,6 @@ class ArticleViewModel(
             dataFactory,
             listConfig
         )
-            .setInitialLoadKey(currentState.lastKey)
             .setFetchExecutor(Executors.newSingleThreadExecutor())
             .build()
     }
@@ -222,11 +221,6 @@ class ArticleViewModel(
 
     fun handleReplyTo(slug: String, name: String) {
         updateState { it.copy(answerToSlug = slug, answerTo = "Reply to $name") }
-    }
-
-    override fun saveState() {
-        updateState { it.copy(lastKey = listData.value?.lastKey as? String?) }
-        super.saveState()
     }
 }
 
@@ -256,16 +250,14 @@ data class ArticleState(
     val answerTo: String? = null,
     val answerToSlug: String? = null,
     val showBottomBar: Boolean = true,
-    val commentText: String? = null,
-    val lastKey: String? = null
+    val commentText: String? = null
 ) : IViewModelState {
     override fun save(outState: SavedStateHandle) {
         outState.set("isSearch", isSearch)
         outState.set("searchQuery", searchQuery)
         outState.set("searchResults", searchResults)
         outState.set("searchPosition", searchPosition)
-//        outState.set("commentText", commentText)
-        outState.set("lastKey", lastKey)
+        outState.set("commentText", commentText)
     }
 
     override fun restore(savedState: SavedStateHandle): ArticleState {
@@ -274,8 +266,7 @@ data class ArticleState(
             searchQuery = savedState["searchQuery"],
             searchResults = savedState["searchResults"] ?: emptyList(),
             searchPosition = savedState["searchPosition"] ?: 0,
-//            commentText = savedState["commentText"],
-            lastKey = savedState["lastKey"]
+            commentText = savedState["commentText"]
         )
     }
 
