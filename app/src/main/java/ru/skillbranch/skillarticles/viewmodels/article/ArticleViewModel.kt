@@ -187,7 +187,7 @@ class ArticleViewModel(
             viewModelScope.launch {
                 repository.sendComment(articleId, currentState.commentText!!, currentState.answerToSlug)
                 withContext(Dispatchers.Main) {
-                    updateState { it.copy(answerTo = null, answerToSlug = null, commentText = null) }
+                    updateState { it.copy(answerTo = null, answerToSlug = null, commentText = null, lastKey = null) }
                 }
             }
         }
@@ -222,6 +222,11 @@ class ArticleViewModel(
     fun handleReplyTo(slug: String, name: String) {
         updateState { it.copy(answerToSlug = slug, answerTo = "Reply to $name") }
     }
+
+    override fun saveState() {
+        updateState { it.copy(lastKey = listData.value?.lastKey as? String?) }
+        super.saveState()
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -250,13 +255,15 @@ data class ArticleState(
     val answerTo: String? = null,
     val answerToSlug: String? = null,
     val showBottomBar: Boolean = true,
-    val commentText: String? = null
+    val commentText: String? = null,
+    val lastKey: String? = null
 ) : IViewModelState {
     override fun save(outState: SavedStateHandle) {
         outState.set("isSearch", isSearch)
         outState.set("searchQuery", searchQuery)
         outState.set("searchResults", searchResults)
         outState.set("searchPosition", searchPosition)
+        outState.set("lastKey", lastKey)
         outState.set("commentText", commentText)
     }
 
@@ -266,6 +273,7 @@ data class ArticleState(
             searchQuery = savedState["searchQuery"],
             searchResults = savedState["searchResults"] ?: emptyList(),
             searchPosition = savedState["searchPosition"] ?: 0,
+            lastKey = savedState["lastKey"],
             commentText = savedState["commentText"]
         )
     }
