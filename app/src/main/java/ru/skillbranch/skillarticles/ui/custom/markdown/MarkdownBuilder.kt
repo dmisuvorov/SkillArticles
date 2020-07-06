@@ -40,7 +40,7 @@ class MarkdownBuilder(context: Context) {
         }
     }
 
-    private fun buildElement(element: Element, builder: SpannableStringBuilder): CharSequence {
+    fun buildElement(element: Element, builder: SpannableStringBuilder): CharSequence {
         return builder.apply {
             when (element) {
                 is Element.Text -> append(element.text)

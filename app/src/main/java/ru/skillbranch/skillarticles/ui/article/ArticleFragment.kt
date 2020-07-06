@@ -6,9 +6,11 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -25,11 +27,13 @@ import kotlinx.android.synthetic.main.layout_submenu.view.*
 import kotlinx.android.synthetic.main.search_view_layout.*
 
 import ru.skillbranch.skillarticles.R
+import ru.skillbranch.skillarticles.data.repositories.Element
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.extensions.*
 import ru.skillbranch.skillarticles.ui.base.*
 import ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
 import ru.skillbranch.skillarticles.ui.custom.Bottombar
+import ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownBuilder
 import ru.skillbranch.skillarticles.ui.delegates.RenderProp
 import ru.skillbranch.skillarticles.viewmodels.article.ArticleState
 import ru.skillbranch.skillarticles.viewmodels.article.ArticleViewModel
@@ -39,6 +43,8 @@ import ru.skillbranch.skillarticles.viewmodels.base.ViewModelFactory
 class ArticleFragment : BaseFragment<ArticleViewModel>(),
     IArticleView {
     private val args: ArticleFragmentArgs by navArgs()
+    private val markdownBuilder = MarkdownBuilder(requireContext())
+
 
     override val viewModel: ArticleViewModel by viewModels {
         ViewModelFactory(
@@ -131,8 +137,8 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
         wrap_comments.setEndIconOnClickListener { view ->
             view.context.hideKeyboard(view)
             viewModel.handleClearComment()
-            et_comment.text = null
-            et_comment.clearFocus()
+//            et_comment.text = null
+//            et_comment.clearFocus()
         }
 
         with(rv_comments) {
@@ -304,15 +310,34 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
             }
         }
 
-        private var searchResults: List<Pair<Int, Int>> by RenderProp(emptyList())
+        private var searchResults: List<Pair<Int, Int>> by RenderProp<List<Pair<Int, Int>>>(
+            emptyList()
+        )
         private var searchPosition: Int by RenderProp(0)
 
-        private var content: List<MarkdownElement> by RenderProp(emptyList()) {
+        private var content: List<MarkdownElement> by RenderProp<List<MarkdownElement>>(emptyList()) {
             //            tv_text_content.isLoading = it.isEmpty()
             tv_text_content.setContent(it)
             if (it.isNotEmpty()) setupCopyListener()
         }
 
+        private var tags: List<String> by RenderProp<List<String>>(emptyList()) { hashtags ->
+            tv_hashtags.setText(buildSpannedString {
+                hashtags.forEach { hashtag ->
+                    markdownBuilder.buildElement(
+                        Element.InlineCode(hashtag), this
+                    )
+                }
+            }, TextView.BufferType.SPANNABLE)
+        }
+
+        private var source by RenderProp("") { link ->
+            tv_source.setText(buildSpannedString {
+                markdownBuilder.buildElement(
+                    Element.Link(link, "Article source"), this
+                )
+            }, TextView.BufferType.SPANNABLE)
+        }
         private var commentText by RenderProp("") {
             et_comment.setText(it)
             if (it.isBlank() && et_comment.hasFocus()) et_comment.clearFocus()
@@ -357,6 +382,8 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
             answerTo = data.answerTo ?: "Comment"
             isShowBottombar = data.showBottomBar
             commentText = data.commentText ?: ""
+            tags = data.tags
+            source = data.source ?: ""
         }
 
         override fun saveUi(outState: Bundle) {

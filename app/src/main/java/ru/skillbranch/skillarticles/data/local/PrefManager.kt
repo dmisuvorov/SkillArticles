@@ -1,21 +1,51 @@
 package ru.skillbranch.skillarticles.data.local
 
-import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.preference.PreferenceManager
-import ru.skillbranch.skillarticles.data.delegates.PrefDelegate
+import ru.skillbranch.skillarticles.App
+import ru.skillbranch.skillarticles.data.delegates.PrefLiveDataDelegate
+import ru.skillbranch.skillarticles.data.models.AppSettings
 
-class PrefManager(context: Context) {
-    val preferences: SharedPreferences by lazy { PreferenceManager(context).sharedPreferences }
+object PrefManager {
 
-    var storedBoolean by PrefDelegate(false)
-    var storedString by PrefDelegate("test")
-    var storedInt by PrefDelegate(Int.MAX_VALUE)
-    var storedLong by PrefDelegate(Long.MAX_VALUE)
-    var storedFloat by PrefDelegate(100f)
-
+    val preferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(App.applicationContext())
+    }
+    val isAuth by PrefLiveDataDelegate(false)
+    private val isDarkMode by PrefLiveDataDelegate(false)
+    private val isBigText by PrefLiveDataDelegate(false)
 
     fun clearAll() {
         preferences.edit().clear().apply()
     }
+
+    fun getAppSettings(): LiveData<AppSettings> {
+        return MediatorLiveData<AppSettings>().apply {
+            value = AppSettings()
+            addSource(isDarkMode) {
+                value = value?.copy(isDarkMode = it)
+            }
+            addSource(isBigText) {
+                value = value?.copy(isBigText = it)
+            }
+        }
+    }
+
+    fun updateSettings(appSettings: AppSettings) {
+        preferences.edit().apply {
+            putBoolean(::isDarkMode.name, appSettings.isDarkMode)
+            putBoolean(::isBigText.name, appSettings.isBigText)
+            apply()
+        }
+    }
+
+    fun setAuth(auth: Boolean) {
+        preferences.edit().apply {
+            putBoolean(::isAuth.name, auth)
+            apply()
+        }
+    }
 }
+

@@ -21,9 +21,11 @@ class IconLinkSpan(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var iconSize = 0
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var textWidth = 0f
     private val dashs = DashPathEffect(floatArrayOf(dotWidth, dotWidth), 0f)
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var path = Path()
 
