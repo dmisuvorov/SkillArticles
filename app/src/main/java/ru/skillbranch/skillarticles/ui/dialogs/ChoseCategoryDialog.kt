@@ -61,14 +61,14 @@ class ChoseCategoryDialog : DialogFragment() {
                 icon = it.icon,
                 title = it.title,
                 articlesCount = it.articlesCount,
-                checked = args.selectedCategories.contains(it.categoryId)
+                checked = selectedCategories.contains(it.categoryId)
             )
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         outState.putStringArray(::selectedCategories.name, selectedCategories.toTypedArray())
+        super.onSaveInstanceState(outState)
     }
 
     data class CategoryItem(

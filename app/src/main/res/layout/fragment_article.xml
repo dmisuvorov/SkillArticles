@@ -124,6 +124,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:hint="Comment"
+            android:layout_marginTop="8dp"
             android:padding="16dp"
             android:theme="@style/TextInputLayoutAppearance"
             app:endIconDrawable="@drawable/ic_close_black_24dp"
