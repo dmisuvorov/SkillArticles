@@ -9,8 +9,7 @@ import kotlinx.android.extensions.LayoutContainer
 import ru.skillbranch.skillarticles.data.local.entities.ArticleItem
 import ru.skillbranch.skillarticles.ui.custom.ArticleItemView
 
-class ArticlesAdapter(private val listener: (ArticleItem) -> Unit = {},
-                      private val bookmarkListener: (ArticleItem, Boolean) -> Unit) :
+class ArticlesAdapter(private val listener: (ArticleItem, Boolean) -> Unit) :
     PagedListAdapter<ArticleItem, ArticleVH>(ArticleDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleVH {
 //        val containerView =
@@ -20,7 +19,7 @@ class ArticlesAdapter(private val listener: (ArticleItem) -> Unit = {},
     }
 
     override fun onBindViewHolder(holder: ArticleVH, position: Int) {
-        holder.bind(getItem(position), listener, bookmarkListener)
+        holder.bind(getItem(position), listener)
     }
 }
 
@@ -38,13 +37,9 @@ class ArticleVH(override val containerView: View) : RecyclerView.ViewHolder(cont
 
     fun bind(
         item: ArticleItem?,
-        listener: (ArticleItem) -> Unit,
-        bookmarkListener: (ArticleItem, Boolean) -> Unit
+        listener: (ArticleItem, Boolean) -> Unit
     ) {
-
         //if use placeholder item may be null
-        (containerView as ArticleItemView).bind(item!!, bookmarkListener)
-        itemView.setOnClickListener { listener(item) }
+        (containerView as ArticleItemView).bind(item!!, listener)
     }
-
 }

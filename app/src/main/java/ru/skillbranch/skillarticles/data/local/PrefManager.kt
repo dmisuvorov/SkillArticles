@@ -25,10 +25,12 @@ object PrefManager {
         return MediatorLiveData<AppSettings>().apply {
             value = AppSettings()
             addSource(isDarkMode) {
-                value = value?.copy(isDarkMode = it)
+                val newValue = value?.copy(isDarkMode = it)
+                if (newValue != value) value = newValue
             }
             addSource(isBigText) {
-                value = value?.copy(isBigText = it)
+                val newValue = value?.copy(isBigText = it)
+                if (newValue != value) value = newValue
             }
         }
     }
@@ -39,6 +41,8 @@ object PrefManager {
             putBoolean(::isBigText.name, appSettings.isBigText)
             apply()
         }
+        isDarkMode.updateValue()
+        isBigText.updateValue()
     }
 
     fun setAuth(auth: Boolean) {
@@ -46,6 +50,7 @@ object PrefManager {
             putBoolean(::isAuth.name, auth)
             apply()
         }
+        isAuth.updateValue()
     }
 }
 

@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.data.delegates
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import kotlin.properties.ReadOnlyProperty
@@ -44,11 +43,11 @@ class PrefDelegate<T>(private val defaultValue: T) : ReadWriteProperty<PrefManag
 }
 
 class PrefLiveDataDelegate<T>(private val defaultValue: T) :
-    ReadOnlyProperty<PrefManager, LiveData<T>> {
-    private lateinit var value: LiveData<T>
-    override fun getValue(thisRef: PrefManager, property: KProperty<*>): LiveData<T> {
-        return if (!::value.isInitialized) PrefLiveData(thisRef, property.name, defaultValue)
-        else value
+    ReadOnlyProperty<PrefManager, PrefLiveData<T>> {
+    private lateinit var value: PrefLiveData<T>
+    override fun getValue(thisRef: PrefManager, property: KProperty<*>): PrefLiveData<T> {
+        if (!::value.isInitialized) value = PrefLiveData(thisRef, property.name, defaultValue)
+        return value
     }
 
 }
@@ -61,23 +60,16 @@ class PrefLiveData<T>(
 ) : LiveData<T>() {
 
     private val preferences = prefManager.preferences
-    private val prefChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, changeKey ->
-            if (changeKey == key) {
-                val newValue = readValue()
-                if (newValue != value) value = newValue
-            }
-        }
+
+    fun updateValue() {
+        val newValue = readValue()
+        if (newValue != value)
+            value = newValue
+    }
 
     override fun onActive() {
         super.onActive()
         value = readValue()
-        preferences.registerOnSharedPreferenceChangeListener(prefChangeListener)
-    }
-
-    override fun onInactive() {
-        super.onInactive()
-        preferences.unregisterOnSharedPreferenceChangeListener(prefChangeListener)
     }
 
     private fun readValue(): T = when (defaultValue) {

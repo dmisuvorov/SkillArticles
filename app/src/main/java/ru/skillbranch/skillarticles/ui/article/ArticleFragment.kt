@@ -43,7 +43,6 @@ import ru.skillbranch.skillarticles.viewmodels.base.ViewModelFactory
 class ArticleFragment : BaseFragment<ArticleViewModel>(),
     IArticleView {
     private val args: ArticleFragmentArgs by navArgs()
-    private val markdownBuilder = MarkdownBuilder(requireContext())
 
 
     override val viewModel: ArticleViewModel by viewModels {
@@ -321,6 +320,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
             if (it.isNotEmpty()) setupCopyListener()
         }
 
+        private val markdownBuilder = MarkdownBuilder(requireContext())
         private var tags: List<String> by RenderProp<List<String>>(emptyList()) { hashtags ->
             tv_hashtags.setText(buildSpannedString {
                 hashtags.forEach { hashtag ->

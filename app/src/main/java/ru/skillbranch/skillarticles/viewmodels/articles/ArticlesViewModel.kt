@@ -54,7 +54,7 @@ class ArticlesViewModel(handle: SavedStateHandle) :
     private fun buildPagedList(
         dataFactory: DataSource.Factory<Int, ArticleItem>
     ): LiveData<PagedList<ArticleItem>> {
-        val builder = LivePagedListBuilder<Int, ArticleItem>(
+        val builder = LivePagedListBuilder(
             dataFactory,
             listConfig
         )

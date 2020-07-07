@@ -46,7 +46,7 @@
         <argument
             android:name="isBookmarks"
             app:argType="boolean"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
         <action
             android:id="@+id/chose_category"
             app:destination="@id/dialog_chose_category" />
