@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.*
 import android.widget.TextView
@@ -203,6 +204,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
         tv_title.text = args.title
         tv_author.text = args.author
         tv_date.text = args.date.format()
+        tv_source.movementMethod = LinkMovementMethod.getInstance()
 
 
 
@@ -415,11 +417,13 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
         }
 
         private var source by RenderProp("") { link ->
-            tv_source.setText(buildSpannedString {
-                markdownBuilder.buildElement(
-                    Element.Link(link, "Article source"), this
-                )
-            }, TextView.BufferType.SPANNABLE)
+            if (link.isNotEmpty()) {
+                tv_source.setText(buildSpannedString {
+                    markdownBuilder.buildElement(
+                        Element.Link(link, "Article source"), this
+                    )
+                }, TextView.BufferType.SPANNABLE)
+            }
         }
         private var commentText by RenderProp("") {
             et_comment.setText(it)
