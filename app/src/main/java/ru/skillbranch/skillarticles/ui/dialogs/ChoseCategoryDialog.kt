@@ -2,6 +2,7 @@ package ru.skillbranch.skillarticles.ui.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ import ru.skillbranch.skillarticles.viewmodels.articles.ArticlesViewModel
 
 class ChoseCategoryDialog : DialogFragment() {
     private val viewModel: ArticlesViewModel by activityViewModels()
-    private val selectedCategories = mutableListOf<String>()
+    private val selectedCategories = mutableSetOf<String>()
     private val args: ChoseCategoryDialogArgs by navArgs()
     private val categoriesAdapter = CategoriesAdapter { categoryItem, checked ->
         toggleCategory(categoryItem, checked)
@@ -44,7 +45,7 @@ class ChoseCategoryDialog : DialogFragment() {
         val adb = AlertDialog.Builder(requireContext())
             .setTitle("Chose category")
             .setPositiveButton("Apply") { _, _ ->
-                viewModel.applyCategories(selectedCategories)
+                viewModel.applyCategories(selectedCategories.toList())
             }
             .setNegativeButton("Reset") { _, _ ->
                 viewModel.applyCategories(emptyList())
@@ -58,7 +59,10 @@ class ChoseCategoryDialog : DialogFragment() {
     private fun toggleCategory(category: CategoryItem, checked: Boolean) {
         if (checked) selectedCategories.add(category.categoryId)
         else selectedCategories.remove(category.categoryId)
+        Log.d("ChoseCategoryDialog", "toggleCategory: $selectedCategories")
         categoriesAdapter.submitList(getCategoryItems())
+        Log.d("ChoseCategoryDialog", "categoriesAdapter.submitList: ${getCategoryItems()}")
+
     }
 
     private fun getCategoryItems(): List<CategoryItem> {
@@ -110,6 +114,7 @@ class CategoryVH(
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(item: CategoryItem) {
+        Log.d("ChoseCategoryDialog", "bind item: $item, ch_select.isChecked = ${ch_select.isChecked}")
         ch_select.isChecked = item.checked
         tv_category.text = item.title
         tv_count.text = "${item.articlesCount}"
@@ -117,7 +122,16 @@ class CategoryVH(
             .load(item.icon)
             .into(iv_icon)
 
-        ch_select.setOnCheckedChangeListener { _, checked -> listener(item, checked) }
+        ch_select.setOnCheckedChangeListener { _, checked ->
+            if (item.checked != checked) {
+                Log.d("ChoseCategoryDialog", "setOnCheckedChangeListener $item to checked = $checked")
+                listener(item, checked)
+            }
+        }
+        itemView.setOnClickListener {
+            Log.d("ChoseCategoryDialog", "toggle item: $item")
+            ch_select.toggle()
+        }
     }
 
 }
