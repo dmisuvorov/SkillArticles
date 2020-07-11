@@ -206,8 +206,6 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
         tv_date.text = args.date.format()
         tv_source.movementMethod = LinkMovementMethod.getInstance()
 
-
-
         et_comment.setOnEditorActionListener { view, _, _ ->
             root.hideKeyboard(view)
             viewModel.handleSendComment(view.text.toString())
@@ -412,6 +410,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(),
                     markdownBuilder.buildElement(
                         Element.InlineCode(hashtag), this
                     )
+                    append(" ")
                 }
             }, TextView.BufferType.SPANNABLE)
         }
